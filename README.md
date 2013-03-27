@@ -1,5 +1,5 @@
-flask_base
-==========
+Base Flask Template
+===================
 
 Base template I like to reuse for larger flask projects
 
