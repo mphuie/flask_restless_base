@@ -15,5 +15,5 @@ def init_db():
 	Base.metadata.create_all(bind=engine)
 
 def reset_db():
-	import TestLabWeb.models
+	import myapp.models
 	Base.metadata.drop_all(bind=engine)
