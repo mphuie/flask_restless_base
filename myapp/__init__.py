@@ -1,9 +1,10 @@
 from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
 
-from myapp.views import aview
-from myapp.database import db_session
+app.config.from_object('config')
 
-@app.teardown_request
-def shutdown_session(exception=None):
-    db_session.remove()
+db = SQLAlchemy(app)
+from myapp.views import aview
+
