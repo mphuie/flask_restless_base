@@ -10,16 +10,40 @@
         });
     });
     myApp.controller('MyController', function($scope, $http, $resource, User) {
-      $scope.users = User.query();
+      var users = User.query(function() {
+        $scope.users = users;
+      });
+      
+      $scope.addUser = function() {
+        u = new User()
+        u.username = $scope.newUser.username
+        u.fullname = $scope.newUser.fullname
+        u.$save(function(data) {
+          console.log(data);
+          $scope.users.push(data);
+          console.log($scope.users);
+        });
+        
+        
+      }
     });
   </script>
 {% endblock %}
 
 {% block body %}
 <div ng-app="myApp" ng-controller="MyController">
-<h1 class="page-header">Home</h1>
+<h1 class="page-header">Users</h1>
   {% raw %}
-  <li ng-repeat="user in users">{{ user.id }}</li>
+  <ol>
+    <li ng-repeat="user in users">{{ user.fullname }} ({{ user.username }})</li>
+  </ol>
+  <form ng-submit="addUser()">
+    <label>Username</label>
+    <input type="text" ng-model="newUser.username">
+    <label>Full name</label>
+    <input type="text" ng-model="newUser.fullname">
+    <button class="btn">Add User</button>
+  </form>
   {% endraw %}
 </div>
 {% endblock %}
