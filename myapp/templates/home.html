@@ -1,6 +1,25 @@
 {% extends 'base.html' %}
 
+{% block head %}
+ <script type="text/javascript">
+    var myApp = angular.module('myApp', ['ngResource'])
+    myApp.factory("User", function($resource) {
+        return $resource("/api/users/:Id", { Id: "@Id"}, {
+          "update": {method:"PUT"},
+          "query": { method:"GET", isArray: true, transformResponse: function(data) { return angular.fromJson(data).objects; } }
+        });
+    });
+    myApp.controller('MyController', function($scope, $http, $resource, User) {
+      $scope.users = User.query();
+    });
+  </script>
+{% endblock %}
 
 {% block body %}
-<h1>Home</h1>
+<div ng-app="myApp" ng-controller="MyController">
+<h1 class="page-header">Home</h1>
+  {% raw %}
+  <li ng-repeat="user in users">{{ user.id }}</li>
+  {% endraw %}
+</div>
 {% endblock %}
